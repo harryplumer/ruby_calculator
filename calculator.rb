@@ -21,6 +21,19 @@ def get_operator
   end
 end
 
+def get_answer(first_num, operation, second_num)
+  case operation
+    when "+"
+      answer = first_num + second_num
+    when "-"
+      answer = first_num - second_num
+    when "*"
+      answer = first_num * second_num
+    when "/"
+      answer = first_num / second_num
+  end
+end
+
 puts "Welcome to the Ruby Calculator"
 puts "What is the first number?"
 first_num = get_num
@@ -28,7 +41,8 @@ puts "What is the operator?"
 operation = get_operator
 puts "What is the second number?"
 second_num = get_num
-puts "The equation is #{first_num} #{operation} #{second_num}"
+puts "Calculating..."
+puts "The result of #{first_num} #{operation} #{second_num} is #{get_answer(first_num, operation, second_num)}"
 
 
 
