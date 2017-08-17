@@ -5,7 +5,7 @@ def get_input
   puts "\nPlease enter an equation with space in between each input. Ex: 2 + 2"
   puts "You may also enter trig functions cos, sin and tan. Ex: cos(180) + sin(32)"
   puts "You may also type 'quit' to Quit"
-  parse($stdin.gets.strip)
+  parse(gets.strip)
   get_input
 end
 
@@ -44,11 +44,11 @@ def verify_number(input)
   number = Float(input) rescue false
   if (number)
     number = number.to_f
-  elsif input.scan(/cos\((.*?)\)/) != []
+  elsif input.scan(/cos\((.*?)\)/).any?
     number = Math.cos(input.scan(/cos\((.*?)\)/)[0][0].to_f)
-  elsif input.scan(/sin\((.*?)\)/) != []
+  elsif input.scan(/sin\((.*?)\)/).any?
     number = Math.sin(input.scan(/sin\((.*?)\)/)[0][0].to_f)
-  elsif input.scan(/tan\((.*?)\)/) != []
+  elsif input.scan(/tan\((.*?)\)/).any?
     number = Math.tan(input.scan(/tan\((.*?)\)/)[0][0].to_f)
   else
     puts "ERROR: #{input} could not be read! Please try again."
@@ -80,7 +80,3 @@ end
 
 puts "--- WELCOME TO THE RUBY CALCULATOR ---"
 get_input
-
-
-
-
