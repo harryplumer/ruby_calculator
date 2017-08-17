@@ -2,8 +2,10 @@
 require 'pry'
 
 def get_input
-  puts "Please enter an equation with space in between all inputs (eg. 2 + 2) or type 'quit' to Quit"
-  solve($stdin.gets.strip)
+  puts "\nPlease enter an equation with space in between each input. Ex: 2 + 2"
+  puts "You may also enter trig functions cos, sin and tan. Ex: cos(180) + sin(32)"
+  puts "You may also type 'quit' to Quit"
+  parse($stdin.gets.strip)
   get_input
 end
 
@@ -33,28 +35,37 @@ def get_answer(first_num, operation, second_num)
   end
 end
 
-def solve(input)
+def verify_number(input)
+  if (!input)
+    puts "ERROR: One or more numbers was left blank! Please try again."
+    get_input
+  end
+
+  number = Float(input) rescue false
+  if (number)
+    number = number.to_f
+  elsif input.scan(/cos\((.*?)\)/) != []
+    number = Math.cos(input.scan(/cos\((.*?)\)/)[0][0].to_f)
+  elsif input.scan(/sin\((.*?)\)/) != []
+    number = Math.sin(input.scan(/sin\((.*?)\)/)[0][0].to_f)
+  elsif input.scan(/tan\((.*?)\)/) != []
+    number = Math.tan(input.scan(/tan\((.*?)\)/)[0][0].to_f)
+  else
+    puts "ERROR: #{input} could not be read! Please try again."
+    get_input
+  end
+end
+
+def parse(input)
   if input.downcase == "quit"
     exit
   end
 
   input_array = input.split(" ")
-
-  first_num = Float(input_array[0]) rescue false
-  if (first_num)
-    first_num = input_array[0].to_f
-  else  
-    puts "ERROR: First number could not be read"
-    get_input
-  end
-
-  second_num = Float(input_array[2]) rescue false
-  if (second_num)
-      second_num = input_array[2].to_f
-  else  
-      puts "ERROR: Second number could not be read"
-      get_input
-  end
+  
+  first_num = verify_number(input_array[0])
+  second_num = verify_number(input_array[2])
+  operation = verify_operator(input_array[1])
 
   if verify_operator(input_array[1])
     operation = input_array[1]
@@ -63,10 +74,11 @@ def solve(input)
     get_input
   end
 
-  puts "The result of #{input} is #{get_answer(first_num, operation, second_num).round(2)}"  
+  puts "The result of #{first_num} #{operation} #{second_num} is #{get_answer(first_num, operation, second_num).round(2)}"
+
 end
 
-puts "Welcome to the Ruby Calculator"
+puts "--- WELCOME TO THE RUBY CALCULATOR ---"
 get_input
 
 
